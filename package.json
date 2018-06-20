@@ -1,6 +1,6 @@
 {
   "name": "reppt",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "基于markdown语法的ppt制作工具.",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
@@ -41,6 +41,7 @@
     "mocha": "^3.5.0"
   },
   "dependencies": {
+    "babel-runtime": "^6.26.0",
     "commander": "^2.15.1",
     "ejs": "^2.6.1",
     "fs-walk": "0.0.2",
@@ -48,7 +49,6 @@
     "pluggable-markdown": "^1.0.0",
     "prettier": "^1.13.5",
     "prompt": "^1.0.0",
-    "prompt-confirm": "^2.0.4",
-    "react": "^16.4.1"
+    "prompt-confirm": "^2.0.4"
   }
 }
