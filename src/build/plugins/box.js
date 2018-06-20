@@ -52,7 +52,6 @@ export default class Box {
   }
 
   render (context, token) {
-    console.log(token)
     return `<Box data={${token.args || ''}}>`
   }
 }

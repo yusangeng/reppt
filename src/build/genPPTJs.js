@@ -1,11 +1,9 @@
 import fs from 'fs'
 import isFunction from 'lodash/isFunction'
 import Markdown from 'pluggable-markdown'
-import myPlugins from './plugins'
-import utils from '../utils'
 import { format } from 'prettier'
-
-const { log, recoverEntities } = utils
+import myPlugins from './plugins'
+import processMarkedOutput from './processMarkedOutput'
 
 export default async function genPPTJs (dstFilename, srcFilename, projectPluginsFilename) {
   const srcStat = fs.statSync(srcFilename)
@@ -43,7 +41,7 @@ export default async function genPPTJs (dstFilename, srcFilename, projectPlugins
 }
 
 function writePPTFile (md, dstFilename) {
-  const raw = processOutput(md.output)
+  const raw = processMarkedOutput(md.output)
   const { prefix } = md.context
 
   const jsx = format(`
@@ -121,23 +119,5 @@ function writePPTFile (md, dstFilename) {
   })
 
   fs.writeFileSync(dstFilename, jsx, { encoding: 'utf8' })
-}
-
-const transFns = [transCode, transClassname]
-
-function processOutput (src) {
-  log('正在将markdown编译结果转化为合法jsx...')
-  return transFns.reduce((prev, fn) => fn(prev), src)
-}
-
-function transCode (src) {
-  return src.replace(/<code(.*?)>((.|\n)+?)<\/code>/g, (match, p1, p2) => {
-    console.log(recoverEntities(p2))
-    return `<code ${recoverEntities(p1)}>{\`${recoverEntities(p2)}\`}</code>`
-  })
-}
-
-function transClassname (src) {
-  return src.replace('class=', 'className=')
 }
 
