@@ -5,7 +5,7 @@ import myPlugins from './plugins'
 import utils from '../utils'
 import { format } from 'prettier'
 
-const { log } = utils
+const { log, recoverEntities } = utils
 
 export default async function genPPTJs (dstFilename, srcFilename, projectPluginsFilename) {
   const srcStat = fs.statSync(srcFilename)
@@ -132,7 +132,8 @@ function processOutput (src) {
 
 function transCode (src) {
   return src.replace(/<code(.*?)>((.|\n)+?)<\/code>/g, (match, p1, p2) => {
-    return `<code ${p1}>{\`${p2}\`}</code>`
+    console.log(recoverEntities(p2))
+    return `<code ${recoverEntities(p1)}>{\`${recoverEntities(p2)}\`}</code>`
   })
 }
 

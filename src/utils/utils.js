@@ -23,3 +23,9 @@ export async function run (cmd) {
     })
   })
 }
+
+export function recoverEntities (src) {
+  return src.replace(/&#(\d+?);/g, (match, p1) => {
+    return String.fromCharCode(parseInt(p1))
+  })
+}
