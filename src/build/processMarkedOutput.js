@@ -15,7 +15,7 @@ function transCode (src) {
 }
 
 function transClassname (src) {
-  return src.replace('class=', 'className=')
+  return src.replace(/class=/g, 'className=')
 }
 
 const transFns = [transImage, transCode, transClassname]
