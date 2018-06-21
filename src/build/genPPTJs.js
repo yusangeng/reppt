@@ -52,7 +52,7 @@ function writePPTFile (md, dstFilename) {
     ${prefix.join('\n')}
 
     export default class PPT extends React.Component {
-      static displayName () {
+      static get displayName () {
         return 'PPT'
       }
 
