@@ -39,7 +39,14 @@ class FileInit {
   }
 
   async initFile (srcDir, dstDir, srcFilename) {
-    const dstFilename = srcFilename.replace(new RegExp(`^${srcDir}`), dstDir).replace(/\.ejs$/, '')
+    srcDir = srcDir.replace(/\\/g, '/')
+    dstDir = dstDir.replace(/\\/g, '/')
+    srcFilename = srcFilename.replace(/\\/g, '/')
+
+    let dstFilename = srcFilename.replace(new RegExp(`^${srcDir}`), dstDir).replace(/\.ejs$/, '')
+
+    srcFilename = path.normalize(srcFilename)
+    dstFilename = path.normalize(dstFilename)
 
     if (srcFilename.endsWith('.ejs')) {
       await this.initEjsFile(dstFilename, srcFilename)
@@ -65,6 +72,8 @@ class FileInit {
   }
 
   async writeFile (content, filename) {
+    mkdir.sync(path.dirname(filename))
+
     if (!fs.existsSync(filename)) {
       fs.writeFileSync(filename, content, { encoding: 'utf8' })
       return
