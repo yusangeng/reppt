@@ -1,4 +1,5 @@
 import { exec } from 'child_process'
+import { XmlEntities } from 'html-entities'
 
 export function error (err) {
   let stack = err.stack || ''
@@ -25,7 +26,11 @@ export async function run (cmd) {
 }
 
 export function recoverEntities (src) {
+  /*
   return src.replace(/&#(\d+?);/g, (match, p1) => {
     return String.fromCharCode(parseInt(p1))
   })
+  */
+
+  return XmlEntities.decode(src)
 }

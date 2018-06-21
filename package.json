@@ -45,6 +45,7 @@
     "commander": "^2.15.1",
     "ejs": "^2.6.1",
     "fs-walk": "0.0.2",
+    "html-entities": "^1.2.1",
     "mkdirp": "^0.5.1",
     "pluggable-markdown": "^1.0.0",
     "prettier": "^1.13.5",
