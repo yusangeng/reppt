@@ -1,6 +1,6 @@
 {
   "name": "reppt",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "基于markdown语法的ppt制作工具.",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
@@ -19,7 +19,7 @@
   },
   "keywords": [
     "PPT",
-    "silde"
+    "slide"
   ],
   "author": {
     "name": "Y3G",
