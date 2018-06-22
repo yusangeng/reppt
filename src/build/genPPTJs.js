@@ -5,7 +5,8 @@ import { format } from 'prettier'
 import myPlugins from './plugins'
 import processMarkedOutput from './processMarkedOutput'
 
-export default async function genPPTJs (dstFilename, srcFilename, projectPluginsFilename) {
+export default async function genPPTJs (config, dstFilename, srcFilename, projectPluginsFilename) {
+  console.log(arguments)
   const srcStat = fs.statSync(srcFilename)
 
   if (!srcStat.isFile()) {
@@ -34,19 +35,18 @@ export default async function genPPTJs (dstFilename, srcFilename, projectPlugins
   }
 
   const mdContent = fs.readFileSync(srcFilename, { encoding: 'utf8' })
-
   md.exec(mdContent)
 
-  writePPTFile(md, dstFilename)
+  writePPTFile(config, md, dstFilename)
 }
 
-function writePPTFile (md, dstFilename) {
+function writePPTFile (config, md, dstFilename) {
   const raw = processMarkedOutput(md.output)
-  const { prefix } = md.context
+  const { prefix = [] } = md.context
 
   const jsx = format(`
     import React from 'react'
-    import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+    import { HashRouter as Router, Route, Redirect } from 'react-router-dom'
     // import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
     ${prefix.join('\n')}
@@ -77,7 +77,10 @@ function writePPTFile (md, dstFilename) {
       }
 
       goNext () {
-        const currIndex = parseInt(window.location.pathname.replace(/^\\//, ''))
+        let currIndex = parseInt(window.location.hash.replace('#/', ''))
+        if (isNaN(currIndex)) {
+          currIndex = -1
+        }
 
         if (currIndex >= ${md.context.pageCount} - 1) {
           return
@@ -87,7 +90,10 @@ function writePPTFile (md, dstFilename) {
       }
 
       goPrev () {
-        const currIndex = parseInt(window.location.pathname.replace(/^\\//, ''))
+        let currIndex = parseInt(window.location.hash.replace('#/', ''))
+        if (isNaN(currIndex)) {
+          currIndex = 1
+        }
 
         if (currIndex === 0) {
           return
