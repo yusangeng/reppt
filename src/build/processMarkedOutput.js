@@ -10,7 +10,21 @@ function transImage (src) {
 
 function transCode (src) {
   return src.replace(/<code(.*?)>((.|\n)+?)<\/code>/g, (match, p1, p2) => {
-    return `<code ${p1}>{\`${recoverEntities(p2)}\`}</code>`
+    let recoveredCode = recoverEntities(p2)
+
+    recoveredCode = recoveredCode
+      .replace('\\', '\\\\')
+      .replace("'", "\\'")
+      .replace('"', '\\"')
+      .split('\n')
+      .map(el => `'${el}'`)
+      .join('+\n')
+
+    return `<code ${p1}>
+      {
+        ${recoveredCode}
+      }
+    </code>`
   })
 }
 
